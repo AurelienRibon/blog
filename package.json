@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server",
-    "postinstall": "npm run less && npm run pack",
+    "postinstall": "node scripts/setup && npm run less && npm run pack",
     "watch": "webpack --display-modules --watch",
     "pack": "webpack --display-modules",
     "less": "lessc public/main.less public/main.css"
