@@ -34,6 +34,7 @@ app.controller('MainController', ($scope, $http) => {
 
 app.controller('PostController', ($scope, $http, $sce) => {
   const postId = getPostId();
+  setupDisqus(postId);
 
   $http.get(`/api/getpost/${postId}`).then(res => {
     const content   = res.data.content;
@@ -84,4 +85,18 @@ function getPostId() {
   const location = window.location.href;
   const idStart  = location.lastIndexOf('/');
   return location.slice(idStart + 1);
+}
+
+function setupDisqus(postId) {
+  window.disqus_config = function() {
+    this.page.url        = `https://aurelienribon.herokuapp.com/post/${postId}`;
+    this.page.identifier = postId;
+  };
+
+  const script = document.createElement('script');
+  script.src = 'https://aurelienribon.disqus.com/embed.js';
+  script.setAttribute('data-timestamp', +new Date());
+
+  const target = document.head || document.body;
+  target.appendChild(script);
 }
