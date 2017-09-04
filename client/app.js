@@ -36,11 +36,13 @@ app.controller('PostController', ($scope, $http, $sce) => {
   const postId = getPostId();
 
   $http.get(`/api/getpost/${postId}`).then(res => {
-    const content  = res.data.content;
-    $scope.title   = res.data.title;
-    $scope.date    = new Date(res.data.date);
-    $scope.content = $sce.trustAsHtml(marked(content));
-    $scope.loaded  = true;
+    const content   = res.data.content;
+    $scope.title    = res.data.title;
+    $scope.date     = new Date(res.data.date);
+    $scope.content  = $sce.trustAsHtml(marked(content));
+    $scope.next     = res.data.next;
+    $scope.previous = res.data.previous;
+    $scope.loaded   = true;
   }, res => {
     console.error('Cannot fetch post', res);
   });

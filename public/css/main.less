@@ -1,3 +1,5 @@
+@color-primary: #305580;
+
 @footerHeight: 250px;
 @footerMargin: 40px;
 
@@ -16,7 +18,7 @@ header {
   background: url(/img/header.jpg);
   background-size: auto 200px;
   height: 200px;
-  border-bottom: 5px solid #305580;
+  border-bottom: 5px solid @color-primary;
   font-family: 'Indie Flower', cursive;
   color: white;
 
@@ -31,16 +33,12 @@ header {
   }
 
   .title {
+    .no-text-decoration;
     position: absolute;
     left: 10px;
     bottom: 17px;
     font-size: 56px;
     color: white;
-
-    &:hover, &:visited, &:link, &:active {
-      color: white;
-      text-decoration: none;
-    }
   }
 
   .avatar {
@@ -59,7 +57,7 @@ footer {
   height: @footerHeight;
   background: url(/img/header.jpg);
   background-size: auto @footerHeight;
-  border-top: 5px solid #305580;
+  border-top: 5px solid @color-primary;
   color: white;
 }
 
@@ -138,6 +136,36 @@ footer {
   }
 }
 
+.previous-or-next {
+  .drop-shadow;
+  background: white;
+  margin-top: 40px;
+  display: flex;
+
+  & > a {
+    .no-text-decoration;
+    display: block;
+    flex: 1;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    color: @color-primary;
+
+    &:hover {
+      background: #80a9d8;
+    }
+
+    &:last-of-type {
+      text-align: right;
+    }
+
+    strong {
+      display: block;
+    }
+  }
+
+}
+
 // -----------------------------------------------------------------------------
 // MIXINS
 // -----------------------------------------------------------------------------
@@ -148,4 +176,10 @@ footer {
 
 .drop-shadow-large {
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.no-text-decoration {
+  &:hover, &:visited, &:link, &:active {
+    text-decoration: none;
+  }
 }

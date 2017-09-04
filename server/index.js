@@ -43,7 +43,16 @@ app.get('/api/getpostmetas/:offset/:limit', async (req, res) => {
 });
 
 app.get('/api/getpost/:postId', async (req, res) => {
-  const post = await db.getPost(req.params.postId);
+  const postId = req.params.postId;
+  const post   = await db.getPost(postId);
+
+  if (!post) {
+    return res.status(404).end('Post not found');
+  }
+
+  const { previous, next} = await db.getNextAndPreviousPosts(post.date);
+  post.previous = previous;
+  post.next     = next;
   return res.json(post);
 });
 
