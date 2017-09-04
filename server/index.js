@@ -3,7 +3,7 @@
 const express = require('express');
 const db      = require('./db');
 
-const PORT      = 4000;
+const PORT      = process.env.PORT || 4000;
 const DATA_HOST = 'http://aurelienjp.cluster010.ovh.net/data/blog';
 
 setupAndStart();
