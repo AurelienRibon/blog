@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="blog">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurelien Ribon dev blog!</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat|Indie+Flower" rel="stylesheet">
+  <script src="/dist/bundle.js"></script>
+</head>
+<body ng-controller="MainController">
+
+  <header>
+    <div class="container">
+      <div>
+        <img src="avatar.jpg" class="avatar">
+        Aurelien Ribon's Dev Blog
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="row">
+      <article class="col-sm-4 post-tile" ng-repeat="post in posts">
+
+        <div>
+          <div class="post-tile-image" ng-style="{ 'background-image': 'url(data/thumbnail/' + post.image + ')' }"></div>
+          <div class="post-tile-text">
+            <div>{{ post.title }}</div>
+            <div>{{ post.date | date }}</div>
+          </div>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <footer>
+  </footer>
+
+</body>
+</html>

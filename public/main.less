@@ -1,0 +1,81 @@
+body {
+  background: #f3f3f3;
+  font-family: 'Open Sans', sans-serif;
+}
+
+header {
+  margin-bottom: 40px;
+  background: url(header.jpg);
+  background-size: auto 200px;
+  height: 200px;
+  border-bottom: 5px solid #305580;
+  font-family: 'Indie Flower', cursive;
+  font-size: 4em;
+  color: white;
+
+  & > div {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+    height: 100%;
+  }
+
+  & > div > div {
+    position: absolute;
+    left: 10px;
+    bottom: 17px;
+  }
+
+  .avatar {
+    width: 68px;
+    border-radius: 4px;
+    vertical-align: top;
+    border: 4px solid white;
+  }
+
+  @media (max-width: 750px) {
+   font-size: 3em;
+  }
+}
+
+footer {
+  margin-top: 40px;
+  background: url(header.jpg);
+  background-size: contain;
+  height: 250px;
+  border-top: 5px solid #305580;
+  color: white;
+}
+
+.post-tile {
+  padding-bottom: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+
+  .post-tile-image {
+    height: 200px;
+    background: no-repeat center white;
+    background-size: cover;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+
+    cursor: pointer;
+    transform: scale(1);
+    transition: all ease 0.2s;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+  }
+
+  .post-tile-text {
+    padding: 10px 0;
+    color: #353535;
+    position: relative;
+    font-family: 'Montserrat', sans-serif;
+
+    & > div:last-of-type {
+      color: #929292;
+      font-size: 0.9em;
+    }
+  }
+}
