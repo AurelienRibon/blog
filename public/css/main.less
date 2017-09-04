@@ -1,4 +1,10 @@
+@footerHeight: 250px;
+@footerMargin: 40px;
+
 body {
+  position: relative;
+  padding-bottom: @footerHeight + @footerMargin;
+  min-height: 1200px;
   background: #f3f3f3;
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
@@ -19,9 +25,9 @@ header {
   }
 
   .container {
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
     position: relative;
     height: 100%;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
   }
 
   .title {
@@ -47,10 +53,12 @@ header {
 }
 
 footer {
-  margin-top: 40px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: @footerHeight;
   background: url(/img/header.jpg);
-  background-size: auto 250px;
-  height: 250px;
+  background-size: auto @footerHeight;
   border-top: 5px solid #305580;
   color: white;
 }
@@ -61,18 +69,18 @@ footer {
   padding-left: 10px;
 
   .post-tile-image {
+    .drop-shadow;
     height: 200px;
     background: no-repeat center white;
     background-size: cover;
-    box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 
     cursor: pointer;
     transform: scale(1);
     transition: all ease 0.2s;
 
     &:hover {
+      .drop-shadow-large;
       transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
   }
 
@@ -90,8 +98,8 @@ footer {
 }
 
 .post {
+  .drop-shadow;
   background: white;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.3);
   padding: 70px;
   visibility: hidden;
 
@@ -124,4 +132,20 @@ footer {
     display: block;
     font-family: 'Montserrat', sans-serif;
   }
+
+  img {
+    .drop-shadow;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// MIXINS
+// -----------------------------------------------------------------------------
+
+.drop-shadow {
+  box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+}
+
+.drop-shadow-large {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
