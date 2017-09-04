@@ -22,10 +22,24 @@ marked.setOptions({
 // -----------------------------------------------------------------------------
 
 app.controller('MainController', ($scope, $http) => {
-  $scope.posts = [];
+  $scope.rows = [];
 
   $http.get('api/getpostmetas/0/120').then(res => {
-    $scope.posts = res.data.reverse();
+    const posts = res.data.reverse();
+    const rows  = [];
+    $scope.rows = rows;
+    let row;
+
+    for (let i = 0; i < posts.length; ++i) {
+      if (i % 3 === 0) {
+        row = [];
+        rows.push(row);
+      }
+
+      row.push(posts[i]);
+    }
+
+    console.log(rows);
   }, res => {
     console.error('Cannot fetch metas', res);
   });
