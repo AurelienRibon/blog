@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const moment  = require('moment');
 const db      = require('./db');
 
 const PORT      = process.env.PORT || 4000;
@@ -10,6 +11,16 @@ setupAndStart();
 
 const app = express();
 app.set('json spaces', 2);
+
+// -----------------------------------------------------------------------------
+// LOGS
+// -----------------------------------------------------------------------------
+
+app.use('*', (req, res, next) => {
+  const date = moment.utc().format('YYYY/MM/DD HH:mm:ss');
+  console.log(`${date} [${req.ip}] ${req.method} ${req.originalUrl}`);
+  return next();
+});
 
 // -----------------------------------------------------------------------------
 // ROUTES
@@ -29,7 +40,7 @@ app.get('/api/getpost/:postId', async (req, res) => {
 
 app.get('/data/thumbnail/:id', (req, res) => {
   const id = req.params.id;
-  res.redirect(`${DATA_HOST}/thumbnails/${id}`);
+  return res.redirect(`${DATA_HOST}/thumbnails/${id}`);
 });
 
 app.use('/dist', express.static(`${__dirname}/../dist`));
