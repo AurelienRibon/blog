@@ -4,24 +4,31 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --display-modules",
-    "watch": "webpack --display-modules --watch"
+    "start": "node server",
+    "postinstall": "npm run less && npm run pack",
+    "watch": "webpack --display-modules --watch",
+    "pack": "webpack --display-modules",
+    "less": "lessc public/main.less public/main.css"
   },
   "author": "aurelien.ribon@gmail.com",
   "license": "MIT",
+  "engines": {
+    "node": "^8.4.0"
+  },
   "dependencies": {
     "angular": "^1.6.6",
     "bootstrap": "^3.3.7",
     "express": "^4.15.4",
     "jquery": "^3.2.1",
+    "less": "^2.7.2",
     "marked": "^0.3.6",
-    "mongodb": "^2.2.31"
+    "mongodb": "^2.2.31",
+    "webpack": "^3.5.5"
   },
   "devDependencies": {
     "eslint": "^4.5.0",
     "hjson": "^3.1.0",
     "moment": "^2.18.1",
-    "request": "^2.81.0",
-    "webpack": "^3.5.5"
+    "request": "^2.81.0"
   }
 }
