@@ -22,13 +22,13 @@
     "jquery": "^3.2.1",
     "less": "^2.7.2",
     "marked": "^0.3.6",
+    "moment": "^2.18.1",
     "mongodb": "^2.2.31",
     "webpack": "^3.5.5"
   },
   "devDependencies": {
     "eslint": "^4.5.0",
     "hjson": "^3.1.0",
-    "moment": "^2.18.1",
     "request": "^2.81.0"
   }
 }
