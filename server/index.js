@@ -37,8 +37,8 @@ app.all('/post/:postId', (req, res, next) => {
 
 app.get('/api/getpostmetas/:offset/:limit', async (req, res) => {
   const offset = Math.max(Number(req.params.offset) || 0, 0);
-  const limit  = Math.max(Number(req.params.limit) || 1, 1);
-  const posts = await db.getPostMetas(offset, limit);
+  const limit  = Math.max(Number(req.params.limit)  || 1, 1);
+  const posts  = await db.getPostMetas(offset, limit);
   return res.json(posts);
 });
 
@@ -50,9 +50,9 @@ app.get('/api/getpost/:postId', async (req, res) => {
     return res.status(404).end('Post not found');
   }
 
-  const { previous, next} = await db.getNextAndPreviousPosts(post.date);
-  post.previous = previous;
-  post.next     = next;
+  const result  = await db.getNextAndPreviousPosts(post.date);
+  post.previous = result.previous;
+  post.next     = result.next;
   return res.json(post);
 });
 
@@ -82,6 +82,7 @@ async function setupAndStart() {
   process.stdout.write('Starting server...');
 
   app.listen(PORT, () => {
-    process.stdout.write(` OK!\n\nServer is listening on port ${PORT}.\n\n`);
+    process.stdout.write(' OK!\n');
+    process.stdout.write(`\nServer is listening on port ${PORT}.\n\n`);
   });
 }
