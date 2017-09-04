@@ -16,9 +16,18 @@ app.set('json spaces', 2);
 // LOGS
 // -----------------------------------------------------------------------------
 
-app.use('*', (req, res, next) => {
+app.use((req, res, next) => {
   const date = moment.utc().format('YYYY/MM/DD HH:mm:ss');
   console.log(`${date} [${req.ip}] ${req.method} ${req.originalUrl}`);
+  return next();
+});
+
+// -----------------------------------------------------------------------------
+// REWRITE RULES
+// -----------------------------------------------------------------------------
+
+app.all('/post/:postId', (req, res, next) => {
+  req.url = '/post.html';
   return next();
 });
 
@@ -41,6 +50,11 @@ app.get('/api/getpost/:postId', async (req, res) => {
 app.get('/data/thumbnail/:id', (req, res) => {
   const id = req.params.id;
   return res.redirect(`${DATA_HOST}/thumbnails/${id}`);
+});
+
+app.get('/data/images/:id', (req, res) => {
+  const id = req.params.id;
+  return res.redirect(`${DATA_HOST}/images/${id}`);
 });
 
 app.use('/dist', express.static(`${__dirname}/../dist`));

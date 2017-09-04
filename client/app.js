@@ -24,34 +24,22 @@ marked.setOptions({
 app.controller('MainController', ($scope, $http) => {
   $scope.rows = [];
 
-  $http.get('api/getpostmetas/0/120').then(res => {
+  $http.get('/api/getpostmetas/0/120').then(res => {
     const posts = res.data.reverse();
-    const rows  = [];
-    $scope.rows = rows;
-    let row;
-
-    for (let i = 0; i < posts.length; ++i) {
-      if (i % 3 === 0) {
-        row = [];
-        rows.push(row);
-      }
-
-      row.push(posts[i]);
-    }
-
-    console.log(rows);
+    $scope.rows = slicePostMetas(posts);
   }, res => {
     console.error('Cannot fetch metas', res);
   });
 });
 
 app.controller('PostController', ($scope, $http, $sce) => {
-  const postId = getQueryParam('id');
+  const postId = getPostId();
 
-  $http.get(`api/getpost/${postId}`).then(res => {
-
+  $http.get(`/api/getpost/${postId}`).then(res => {
+    const content  = res.data.content;
     $scope.title   = res.data.title;
-    $scope.content = $sce.trustAsHtml(marked(res.data.content));
+    $scope.date    = new Date(res.data.date);
+    $scope.content = $sce.trustAsHtml(marked(content));
   }, res => {
     console.error('Cannot fetch post', res);
   });
@@ -61,15 +49,24 @@ app.controller('PostController', ($scope, $http, $sce) => {
 // HELPERS
 // -----------------------------------------------------------------------------
 
-function getQueryParam(paramId) {
-  const str = window.location.href;
-  const startIndex = str.lastIndexOf('?');
+function slicePostMetas(posts) {
+  const rows = [];
+  let row;
 
-  if (startIndex === -1) {
-    return null;
+  for (let i = 0; i < posts.length; ++i) {
+    if (i % 3 === 0) {
+      row = [];
+      rows.push(row);
+    }
+
+    row.push(posts[i]);
   }
 
-  const tuples = str.slice(startIndex + 1).split('&').map(it => it.split('='));
-  const tuple  =  tuples.find(it => it[0] === paramId);
-  return tuple && tuple[1];
+  return rows;
+}
+
+function getPostId() {
+  const location = window.location.href;
+  const idStart  = location.lastIndexOf('/');
+  return location.slice(idStart + 1);
 }

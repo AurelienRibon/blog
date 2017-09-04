@@ -4,6 +4,7 @@ const fs   = require('fs');
 const path = require('path');
 
 injectRandomNumber(`${__dirname}/../public/index.html`);
+injectRandomNumber(`${__dirname}/../public/post.html`);
 
 function injectRandomNumber(filePath) {
   const random  = 1000000 + Math.floor(Math.random() * 1000000);

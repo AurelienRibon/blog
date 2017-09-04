@@ -1,6 +1,8 @@
 body {
   background: #f3f3f3;
   font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  line-height: 1.5em;
 }
 
 header {
@@ -37,13 +39,10 @@ header {
 
   .avatar {
     width: 68px;
-    border-radius: 4px;
-    vertical-align: top;
     border: 4px solid white;
-  }
-
-  @media (max-width: 750px) {
-   font-size: 3em;
+    border-radius: 4px;
+    position: relative;
+    bottom: 10px;
   }
 }
 
@@ -87,5 +86,41 @@ footer {
       color: #929292;
       font-size: 0.9em;
     }
+  }
+}
+
+.post {
+  background: white;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+  padding: 70px;
+
+  .title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3em;
+    margin: 0 0 20px 0;
+  }
+
+  .date {
+    margin-bottom: 60px;
+    color: #a5a5a5;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    margin: 60px 0 40px 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2em;
+  }
+
+  li > strong {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
   }
 }
