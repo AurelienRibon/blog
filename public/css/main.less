@@ -10,19 +10,29 @@ header {
   height: 200px;
   border-bottom: 5px solid #305580;
   font-family: 'Indie Flower', cursive;
-  font-size: 4em;
   color: white;
 
-  & > div {
+  @media (max-width: 750px) {
+    font-size: 3em;
+  }
+
+  .container {
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
     position: relative;
     height: 100%;
   }
 
-  & > div > div {
+  .title {
     position: absolute;
     left: 10px;
     bottom: 17px;
+    font-size: 56px;
+    color: white;
+
+    &:hover, &:visited, &:link, &:active {
+      color: white;
+      text-decoration: none;
+    }
   }
 
   .avatar {
