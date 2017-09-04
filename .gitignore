@@ -3,5 +3,5 @@ database
 dist
 node_modules
 
-public/main.css
+public/css/main.css
 package-lock.json
