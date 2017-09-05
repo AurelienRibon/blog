@@ -118,14 +118,39 @@ footer {
     font-size: 2em;
   }
 
-  li > strong {
-    display: block;
+  h3 {
+    margin: 40px 0 30px 0;
     font-family: 'Montserrat', sans-serif;
   }
 
   img {
-    .drop-shadow;
+    display: block;
     max-width: 100%;
+    margin: 50px auto;
+    border: 6px solid #efefef;
+  }
+
+  img + br + em {
+    display: block;
+    text-align: center;
+    font-size: 0.8em;
+    margin-bottom: 50px;
+    margin-top: -65px;
+  }
+
+  img + br + img {
+    margin-top: -40px;
+  }
+
+  blockquote {
+    & > p:first-child {
+      margin-top: 0;
+    }
+  }
+
+  #ytplayer {
+    display: block;
+    margin: 50px auto;
   }
 }
 

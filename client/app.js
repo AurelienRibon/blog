@@ -8,16 +8,7 @@ require('angular-route');
 const marked = require('marked');
 const app = angular.module('blog', [ 'ngRoute' ]);
 
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: true,
-  smartLists: true,
-  smartypants: false
-});
+marked.setOptions({ breaks: true });
 
 // -----------------------------------------------------------------------------
 // ROUTER
