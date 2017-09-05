@@ -25,6 +25,10 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl : 'part-post.html',
       controller  : 'PostController'
     })
+    .when('/editpost/:postId', {
+      templateUrl : 'part-editpost.html',
+      controller  : 'EditPostController'
+    })
     .otherwise({
       redirectTo  : '/'
     });
@@ -45,22 +49,80 @@ app.controller('HomeController', function($scope, $http) {
   });
 });
 
-app.controller('PostController', function($scope, $http, $sce) {
+app.controller('PostController', function($scope, $location, $sce, fetchPost) {
   const postId = getPostId();
   setupDisqus(postId);
 
-  $http.get(`/api/getpost/${postId}`).then(res => {
-    const content   = res.data.content;
-    $scope.title    = res.data.title;
-    $scope.date     = new Date(res.data.date);
-    $scope.content  = $sce.trustAsHtml(marked(content));
-    $scope.next     = res.data.next;
-    $scope.previous = res.data.previous;
+  $scope.onClick = (event) => {
+    console.dir(event, { depth: 100, colors: true });
+    if (event.altKey && event.shiftKey) {
+      $location.path(`/editpost/${postId}`);
+    }
+  };
+
+  fetchPost(postId, (err, post) => {
+    if (err) {
+      return console.error('Cannot fetch post', err);
+    }
+
+    $scope.title    = post.title;
+    $scope.date     = new Date(post.date);
+    $scope.content  = $sce.trustAsHtml(marked(post.content));
+    $scope.next     = post.next;
+    $scope.previous = post.previous;
     $scope.loaded   = true;
-  }, res => {
-    console.error('Cannot fetch post', res);
   });
 });
+
+app.controller('EditPostController', function($scope, $sce, fetchPost, editPost) {
+  const postId = getPostId();
+
+  $scope.render = content => $sce.trustAsHtml(marked(content || ''));
+  $scope.submit = () => {
+    editPost(postId, $scope.content, err => {
+      return window.alert(err ? `Failed to submit post: ${JSON.stringify(err)}` : 'Post update successful!');
+    });
+  };
+
+  fetchPost(postId, (err, post) => {
+    if (err) {
+      return window.alert('Cannot fetch post', err);
+    }
+
+    $scope.title   = post.title;
+    $scope.date    = new Date(post.date);
+    $scope.content = post.content;
+    $scope.loaded  = true;
+  });
+});
+
+// -----------------------------------------------------------------------------
+// SERVICES
+// -----------------------------------------------------------------------------
+
+app.factory('fetchPost', function($http) {
+  return (postId, done) => {
+    $http.get(`/api/getpost/${postId}`).then(res => {
+      return done(null, res.data);
+    }, err => {
+      return done(err);
+    });
+  };
+});
+
+app.factory('editPost', function($http) {
+  return (postId, content, done) => {
+    $http.post(`/api/editpost/${postId}`, { content }).then(() => {
+      return done();
+    }, err => {
+      return done(err);
+    });
+  };
+});
+
+// -----------------------------------------------------------------------------
+// DIRECTIVES
+// -----------------------------------------------------------------------------
 
 app.directive('visibleIf', function() {
   return {

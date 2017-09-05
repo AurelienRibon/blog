@@ -1,8 +1,9 @@
 'use strict';
 
-const express = require('express');
-const moment  = require('moment');
-const db      = require('./db');
+const express    = require('express');
+const moment     = require('moment');
+const bodyParser = require('body-parser');
+const db         = require('./db');
 
 const PORT      = process.env.PORT || 4000;
 const DATA_HOST = 'http://aurelienjp.cluster010.ovh.net/data/blog';
@@ -26,6 +27,10 @@ app.use((req, res, next) => {
 // ROUTES
 // -----------------------------------------------------------------------------
 
+app.post('*', bodyParser.json());
+app.get('/post/*', rewriteUrlToHome);
+app.get('/editpost/*', rewriteUrlToHome);
+
 app.get('/api/getpostmetas/:offset/:limit', async (req, res) => {
   const offset = Math.max(Number(req.params.offset) || 0, 0);
   const limit  = Math.max(Number(req.params.limit)  || 1, 1);
@@ -45,6 +50,13 @@ app.get('/api/getpost/:postId', async (req, res) => {
   post.previous = result.previous;
   post.next     = result.next;
   return res.json(post);
+});
+
+app.post('/api/editpost/:postId', async (req, res) => {
+  const postId = req.params.postId;
+  const content = req.body.content;
+  await db.setPostContent(postId, content);
+  return res.end();
 });
 
 app.get('/data/thumbnail/:id', (req, res) => {
@@ -80,4 +92,9 @@ async function setupAndStart() {
     process.stdout.write(' OK!\n');
     process.stdout.write(`\nServer is listening on port ${PORT}.\n\n`);
   });
+}
+
+function rewriteUrlToHome(req, res, next) {
+  req.url = '/';
+  return next();
 }

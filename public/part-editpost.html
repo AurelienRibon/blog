@@ -1,0 +1,18 @@
+<section class="edit-post">
+  <label>TITLE</label>
+  <div class="input-group input-group-lg edit-title">
+    <input type="text" class="form-control" ng-model="title">
+    <span class="input-group-btn">
+      <button class="btn btn-primary" type="button" ng-click="submit()">SUBMIT</button>
+    </span>
+  </div>
+
+  <label>CONTENT</label>
+  <textarea class="form-control edit-content" ng-model="content"></textarea>
+</section>
+
+<article class="post" visible-if="loaded">
+  <h1 class="title">{{ title }}</h1>
+  <div class="date">{{ date | date }}</div>
+  <div ng-bind-html="render(content)"></div>
+</article>

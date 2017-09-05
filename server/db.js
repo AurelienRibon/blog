@@ -32,6 +32,10 @@ exports.getPost = async function(postId) {
   return db.posts.findOne({ _id: postId });
 };
 
+exports.setPostContent = async function(postId, content) {
+  return db.posts.updateOne({ _id: postId }, { $set: { content } });
+};
+
 exports.getNextAndPreviousPosts = async function(date) {
   const projection = { _id: 1, date: 1, title: 1, image: 1 };
   const nexts = await db.posts.find({ date: { $gt: date } }).project(projection).sort({ date: 1 }).limit(1).toArray();
