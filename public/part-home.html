@@ -1,0 +1,15 @@
+<div class="row" ng-repeat="row in rows">
+  <article class="col-sm-4 post-tile" ng-repeat="post in row">
+
+    <div>
+      <a ng-href="/post/{{ post._id }}">
+        <div class="post-tile-image" ng-style="{ 'background-image': 'url(data/thumbnail/' + post.image + ')' }"></div>
+      </a>
+      <div class="post-tile-text">
+        <div>{{ post.title }}</div>
+        <div>{{ post.date | date }}</div>
+      </div>
+    </div>
+
+  </article>
+</div>

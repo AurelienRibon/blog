@@ -1,0 +1,20 @@
+<article class="post" visible-if="loaded">
+  <h1 class="title">{{ title }}</h1>
+  <div class="date">{{ date | date}}</div>
+  <div ng-bind-html="content"></div>
+</article>
+
+<section class="previous-or-next">
+  <a ng-href="/post/{{ previous._id }}" ng-show="previous">
+    <strong>{{ previous.title }}</strong>
+    <span class="glyphicon glyphicon-chevron-left"></span>
+    <span>Previous</span>
+  </a>
+  <a ng-href="/post/{{ next._id }}" ng-show="next">
+    <strong>{{ next.title }}</strong>
+    <span>Next</span>
+    <span class="glyphicon glyphicon-chevron-right"></span>
+  </a>
+</section>
+
+<div id="disqus_thread"></div>

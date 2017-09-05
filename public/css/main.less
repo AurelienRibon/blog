@@ -1,12 +1,10 @@
 @color-primary: #305580;
 
-@footerHeight: 250px;
-@footerMargin: 40px;
+* {
+  box-sizing: border-box;
+}
 
 body {
-  position: relative;
-  padding-bottom: @footerHeight + @footerMargin;
-  min-height: 1200px;
   background: #f3f3f3;
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
@@ -21,10 +19,6 @@ header {
   border-bottom: 5px solid @color-primary;
   font-family: 'Indie Flower', cursive;
   color: white;
-
-  @media (max-width: 750px) {
-    font-size: 3em;
-  }
 
   .container {
     position: relative;
@@ -51,12 +45,10 @@ header {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: @footerHeight;
+  height: 250px;
+  margin-top: 40px;
   background: url(/img/header.jpg);
-  background-size: auto @footerHeight;
+  background-size: auto 250px;
   border-top: 5px solid @color-primary;
   color: white;
 }
@@ -133,6 +125,7 @@ footer {
 
   img {
     .drop-shadow;
+    max-width: 100%;
   }
 }
 

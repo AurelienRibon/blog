@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="/">
   <title>Aurelien Ribon Dev Blog!</title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/css/main.css?r=RANDOMNUMBER">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Montserrat:400,700|Indie+Flower" rel="stylesheet">
   <script src="/dist/bundle.js?r=RANDOMNUMBER"></script>
 </head>
-<body ng-controller="MainController">
+<body>
 
   <header>
     <div class="container">
@@ -20,22 +21,7 @@
     </div>
   </header>
 
-  <main class="container">
-    <div class="row" ng-repeat="row in rows">
-      <article class="col-sm-4 post-tile" ng-repeat="post in row">
-
-        <div>
-          <a ng-href="/post/{{ post._id }}">
-            <div class="post-tile-image" ng-style="{ 'background-image': 'url(data/thumbnail/' + post.image + ')' }"></div>
-          </a>
-          <div class="post-tile-text">
-            <div>{{ post.title }}</div>
-            <div>{{ post.date | date }}</div>
-          </div>
-        </div>
-
-      </article>
-    </div>
+  <main class="container" ng-view>
   </main>
 
   <footer>

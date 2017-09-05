@@ -3,8 +3,10 @@
 require('bootstrap/dist/js/bootstrap.js');
 
 const angular = require('angular');
-const marked  = require('marked');
-const app     = angular.module('blog', []);
+require('angular-route');
+
+const marked = require('marked');
+const app = angular.module('blog', [ 'ngRoute' ]);
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -18,10 +20,30 @@ marked.setOptions({
 });
 
 // -----------------------------------------------------------------------------
+// ROUTER
+// -----------------------------------------------------------------------------
+
+app.config(function($routeProvider, $locationProvider) {
+  $locationProvider.html5Mode(true);
+  $routeProvider
+    .when('/', {
+      templateUrl : 'part-home.html',
+      controller  : 'HomeController'
+    })
+    .when('/post/:postId', {
+      templateUrl : 'part-post.html',
+      controller  : 'PostController'
+    })
+    .otherwise({
+      redirectTo  : '/'
+    });
+});
+
+// -----------------------------------------------------------------------------
 // CONTROLLERS
 // -----------------------------------------------------------------------------
 
-app.controller('MainController', ($scope, $http) => {
+app.controller('HomeController', function($scope, $http) {
   $scope.rows = [];
 
   $http.get('/api/getpostmetas/0/120').then(res => {
@@ -32,7 +54,7 @@ app.controller('MainController', ($scope, $http) => {
   });
 });
 
-app.controller('PostController', ($scope, $http, $sce) => {
+app.controller('PostController', function($scope, $http, $sce) {
   const postId = getPostId();
   setupDisqus(postId);
 
@@ -49,17 +71,20 @@ app.controller('PostController', ($scope, $http, $sce) => {
   });
 });
 
-app.directive('visibleIf', () => ({
-  restrict : 'A',
-  scope    : { condition: '=visibleIf' },
-  link(scope, element, attrs) { console.log('attrs', attrs);
-    scope.$watch('condition', val => {
-      if (val === true) {
-        element.css('visibility', 'visible');
-      }
-    });
-  }
-}));
+app.directive('visibleIf', function() {
+  return {
+    restrict : 'A',
+    scope    : { condition: '=visibleIf' },
+
+    link(scope, element) {
+      scope.$watch('condition', val => {
+        if (val === true) {
+          element.css('visibility', 'visible');
+        }
+      });
+    }
+  };
+});
 
 // -----------------------------------------------------------------------------
 // HELPERS
