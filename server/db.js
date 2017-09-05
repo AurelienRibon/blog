@@ -26,7 +26,7 @@ exports.addPosts = async function(posts) {
 
 exports.getPostMetas = async function(offset, limit) {
   const projection = { _id: 1, date: 1, title: 1, image: 1 };
-  return db.posts.find().skip(offset).limit(limit).project(projection).sort({ date: 1 }).toArray();
+  return db.posts.find().skip(offset).limit(limit).project(projection).sort({ date: -1 }).toArray();
 };
 
 exports.getPost = async function(postId) {

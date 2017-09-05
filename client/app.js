@@ -38,14 +38,17 @@ app.config(function($routeProvider, $locationProvider) {
 // CONTROLLERS
 // -----------------------------------------------------------------------------
 
-app.controller('HomeController', function($scope, $http) {
+app.controller('HomeController', function($scope, fetchMetas) {
   $scope.rows = [];
 
-  $http.get('/api/getpostmetas/0/120').then(res => {
-    const posts = res.data.reverse();
-    $scope.rows = slicePostMetas(posts);
-  }, res => {
-    console.error('Cannot fetch metas', res);
+  fetchMetas((err, posts) => {
+    if (err) {
+      return console.error('Cannot fetch posts', err);
+    }
+
+    const postsByYear   = slicePostMetas(posts);
+    $scope.postsByYear  = postsByYear;
+    $scope.yearsOfPosts = getPostsYears(postsByYear);
   });
 });
 
@@ -54,7 +57,6 @@ app.controller('PostController', function($scope, $location, $sce, fetchPost) {
   setupDisqus(postId);
 
   $scope.onClick = (event) => {
-    console.dir(event, { depth: 100, colors: true });
     if (event.altKey && event.shiftKey) {
       $location.path(`/editpost/${postId}`);
     }
@@ -100,6 +102,16 @@ app.controller('EditPostController', function($scope, $sce, fetchPost, editPost)
 // SERVICES
 // -----------------------------------------------------------------------------
 
+app.factory('fetchMetas', function($http) {
+  return (done) => {
+    $http.get('/api/getpostmetas/0/120').then(res => {
+      return done(null, res.data);
+    }, err => {
+      return done(err);
+    });
+  };
+});
+
 app.factory('fetchPost', function($http) {
   return (postId, done) => {
     $http.get(`/api/getpost/${postId}`).then(res => {
@@ -144,19 +156,28 @@ app.directive('visibleIf', function() {
 // -----------------------------------------------------------------------------
 
 function slicePostMetas(posts) {
-  const rows = [];
-  let row;
+  const postsByYear = {};
 
-  for (let i = 0; i < posts.length; ++i) {
-    if (i % 3 === 0) {
-      row = [];
-      rows.push(row);
+  for (const post of posts) {
+    post.date = new Date(post.date);
+
+    const year  = post.date.getFullYear();
+    const rows  = postsByYear[year] = postsByYear[year] || [ [] ];
+    let lastRow = rows[rows.length - 1];
+
+    if (lastRow.length === 3) {
+      lastRow = [];
+      rows.push(lastRow);
     }
 
-    row.push(posts[i]);
+    lastRow.push(post);
   }
 
-  return rows;
+  return postsByYear;
+}
+
+function getPostsYears(postsByYear) {
+  return Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 }
 
 function getPostId() {
