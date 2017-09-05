@@ -8,7 +8,8 @@
     "postinstall": "node scripts/setup && npm run less && npm run pack",
     "watch": "webpack --display-modules --watch",
     "pack": "webpack --display-modules",
-    "less": "lessc public/css/main.less public/css/main.css"
+    "less": "lessc public/css/main.less public/css/main.css",
+    "dumpdb": "./scripts/dumpdb.sh"
   },
   "author": "aurelien.ribon@gmail.com",
   "license": "MIT",

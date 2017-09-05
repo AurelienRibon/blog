@@ -2,15 +2,16 @@
 
 const mongoClient = require('mongodb').MongoClient;
 
-const MONGO_HOST = process.env.MONGO_BLOG_HOST;
-const MONGO_USER = process.env.MONGO_BLOG_USER;
-const MONGO_PASS = process.env.MONGO_BLOG_PASS;
+const HOST = process.env.MONGO_BLOG_HOST;
+const COLL = process.env.MONGO_BLOG_COLL;
+const USER = process.env.MONGO_BLOG_USER;
+const PASS = process.env.MONGO_BLOG_PASS;
 
 const db = { posts: null };
 
 exports.connect = async function() {
   try {
-    const conn = await mongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}`);
+    const conn = await mongoClient.connect(`mongodb://${USER}:${PASS}@${HOST}/${COLL}`);
     db.posts   = conn.collection('posts');
   } catch (err) {
     console.error('[FATAL] Connection to database failed.');
