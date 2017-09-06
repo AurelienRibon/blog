@@ -51,9 +51,9 @@ app.controller('HomeController', function($scope, fetchMetas, setupDisqusComment
   });
 });
 
-app.controller('PostController', function($scope, $location, $sce, fetchPost) {
+app.controller('PostController', function($scope, $location, $sce, fetchPost, setupDisqusComments) {
   const postId = getPostId();
-  setupDisqus(postId);
+  setupDisqusComments(postId);
 
   $scope.onClick = (event) => {
     if (event.altKey && event.shiftKey) {
@@ -149,6 +149,32 @@ app.factory('setupDisqusCommentCounts', function($timeout) {
   };
 });
 
+app.factory('setupDisqusComments', function($timeout) {
+  return (postId) => {
+    const config = function() {
+      this.page.url        = `https://aurelienribon.herokuapp.com/post/${postId}`;
+      this.page.identifier = postId;
+    };
+
+    $timeout(() => {
+      const scriptAlreadyInserted = document.querySelector('#disqus-embed-js');
+
+      if (!scriptAlreadyInserted) {
+        window.disqus_config = config;
+
+        const script = document.createElement('script');
+        script.src = 'https://aurelienribon.disqus.com/embed.js';
+        script.id  = 'disqus-embed-js';
+        script.setAttribute('data-timestamp', +new Date());
+
+        document.head.appendChild(script);
+      } else {
+        DISQUS.reset({ reload: true, config }); // eslint-disable-line no-undef
+      }
+    });
+  };
+});
+
 // -----------------------------------------------------------------------------
 // DIRECTIVES
 // -----------------------------------------------------------------------------
@@ -197,18 +223,4 @@ function getPostId() {
   const location = window.location.href;
   const idStart  = location.lastIndexOf('/');
   return location.slice(idStart + 1);
-}
-
-function setupDisqus(postId) {
-  window.disqus_config = function() {
-    this.page.url        = `https://aurelienribon.herokuapp.com/post/${postId}`;
-    this.page.identifier = postId;
-  };
-
-  const script = document.createElement('script');
-  script.src = 'https://aurelienribon.disqus.com/embed.js';
-  script.setAttribute('data-timestamp', +new Date());
-
-  const target = document.head || document.body;
-  target.appendChild(script);
 }
