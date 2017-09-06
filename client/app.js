@@ -46,9 +46,7 @@ app.controller('HomeController', function($scope, fetchMetas) {
       return console.error('Cannot fetch posts', err);
     }
 
-    const postsByYear   = slicePostMetas(posts);
-    $scope.postsByYear  = postsByYear;
-    $scope.yearsOfPosts = getPostsYears(postsByYear);
+    $scope.posts = slicePostMetas(posts);
   });
 });
 
@@ -156,13 +154,13 @@ app.directive('visibleIf', function() {
 // -----------------------------------------------------------------------------
 
 function slicePostMetas(posts) {
-  const postsByYear = {};
+  const slicedPosts = { old: [ [] ], new: [ [] ] };
 
   for (const post of posts) {
     post.date = new Date(post.date);
 
     const year  = post.date.getFullYear();
-    const rows  = postsByYear[year] = postsByYear[year] || [ [] ];
+    const rows  = year < 2017 ? slicedPosts.old : slicedPosts.new;
     let lastRow = rows[rows.length - 1];
 
     if (lastRow.length === 3) {
@@ -173,11 +171,7 @@ function slicePostMetas(posts) {
     lastRow.push(post);
   }
 
-  return postsByYear;
-}
-
-function getPostsYears(postsByYear) {
-  return Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+  return slicedPosts;
 }
 
 function getPostId() {

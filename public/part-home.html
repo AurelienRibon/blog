@@ -1,9 +1,7 @@
-<div id='home' class="row" ng-repeat="year in yearsOfPosts">
-  <h1>{{ year }}</h1>
+<div id='home' class="row">
 
-  <div class="row" ng-repeat="row in postsByYear[year]">
+  <div class="row" ng-repeat="row in posts.new">
     <article class="col-sm-4 post-tile" ng-repeat="post in row">
-
       <div>
         <a ng-href="/post/{{ post._id }}">
           <div class="post-tile-image" ng-style="{ 'background-image': 'url(data/thumbnail/' + post.image + ')' }"></div>
@@ -13,7 +11,24 @@
           <div>{{ post.date | date }}</div>
         </div>
       </div>
-
     </article>
   </div>
+
+  <h1>Archives from my old blog</h1>
+
+  <div class="row" ng-repeat="row in posts.old">
+    <article class="col-sm-4 post-tile" ng-repeat="post in row">
+      <div>
+        <a ng-href="/post/{{ post._id }}">
+          <div class="post-tile-image" ng-style="{ 'background-image': 'url(data/thumbnail/' + post.image + ')' }"></div>
+        </a>
+        <a ng-href="/post/{{ post._id }}"></a>
+        <div class="post-tile-text">
+          <div>{{ post.title }}</div>
+          <div>{{ post.date | date }}</div>
+        </div>
+      </div>
+    </article>
+  </div>
+
 </div>
