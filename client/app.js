@@ -38,7 +38,7 @@ app.config(function($routeProvider, $locationProvider) {
 // CONTROLLERS
 // -----------------------------------------------------------------------------
 
-app.controller('HomeController', function($scope, fetchMetas) {
+app.controller('HomeController', function($scope, fetchMetas, setupDisqusCommentCounts) {
   $scope.rows = [];
 
   fetchMetas((err, posts) => {
@@ -47,6 +47,7 @@ app.controller('HomeController', function($scope, fetchMetas) {
     }
 
     $scope.posts = slicePostMetas(posts);
+    setupDisqusCommentCounts();
   });
 });
 
@@ -126,6 +127,24 @@ app.factory('editPost', function($http) {
       return done();
     }, res => {
       return done(new Error(`${res.data}`));
+    });
+  };
+});
+
+app.factory('setupDisqusCommentCounts', function($timeout) {
+  return () => {
+    $timeout(() => {
+      const scriptAlreadyInserted = document.querySelector('#dsq-count-scr');
+
+      if (!scriptAlreadyInserted) {
+        const script = document.createElement('script');
+        script.src = 'https://aurelienribon.disqus.com/count.js';
+        script.id  = 'dsq-count-scr';
+
+        document.head.appendChild(script);
+      } else {
+        DISQUSWIDGETS.getCount({ reset: true }); // eslint-disable-line no-undef
+      }
     });
   };
 });

@@ -7,8 +7,11 @@
           <div class="post-tile-image" ng-style="{ 'background-image': 'url(data/thumbnail/' + post.image + ')' }"></div>
         </a>
         <div class="post-tile-text">
-          <div>{{ post.title }}</div>
-          <div>{{ post.date | date }}</div>
+          <div class="info">
+            <div class="date">{{ post.date | date }}</div>
+            <div class="disqus-comment-count" data-disqus-identifier="{{ post._id }}">&nbsp;</div>
+          </div>
+          <div class="title">{{ post.title }}</div>
         </div>
       </div>
     </article>
@@ -24,8 +27,11 @@
         </a>
         <a ng-href="/post/{{ post._id }}"></a>
         <div class="post-tile-text">
-          <div>{{ post.title }}</div>
-          <div>{{ post.date | date }}</div>
+          <div class="info">
+            <div class="date">{{ post.date | date }}</div>
+            <div class="disqus-comment-count" data-disqus-identifier="{{ post._id }}">&nbsp;</div>
+          </div>
+          <div class="title">{{ post.title }}</div>
         </div>
       </div>
     </article>
