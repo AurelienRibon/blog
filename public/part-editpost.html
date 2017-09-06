@@ -1,14 +1,17 @@
 <section class="edit-post">
   <label>TITLE</label>
-  <div class="input-group input-group-lg edit-title">
-    <input type="text" class="form-control" ng-model="title">
-    <span class="input-group-btn">
-      <button class="btn btn-primary" type="button" ng-click="submit()">SUBMIT</button>
-    </span>
-  </div>
+  <input type="text" class="form-control input-lg edit-title" ng-model="title">
 
   <label>CONTENT</label>
   <textarea class="form-control edit-content" ng-model="content"></textarea>
+
+  <label>VALIDATION</label>
+  <div class="input-group input-group-lg">
+    <input type="password" class="form-control" ng-model="password" placeholder="Password">
+    <span class="input-group-btn">
+      <button class="btn btn-primary" type="submit" ng-click="submit()">SUBMIT</button>
+    </span>
+  </div>
 </section>
 
 <article class="post" visible-if="loaded">

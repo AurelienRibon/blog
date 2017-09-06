@@ -79,14 +79,14 @@ app.controller('EditPostController', function($scope, $sce, fetchPost, editPost)
 
   $scope.render = content => $sce.trustAsHtml(marked(content || ''));
   $scope.submit = () => {
-    editPost(postId, $scope.content, err => {
-      return window.alert(err ? `Failed to submit post: ${JSON.stringify(err)}` : 'Post update successful!');
+    editPost(postId, $scope.password, $scope.content, err => {
+      return window.alert(err ? `Failed to submit post. ${err.message}` : 'Post update successful!');
     });
   };
 
   fetchPost(postId, (err, post) => {
     if (err) {
-      return window.alert('Cannot fetch post', err);
+      return console.error('Cannot fetch post', err);
     }
 
     $scope.title   = post.title;
@@ -104,8 +104,8 @@ app.factory('fetchMetas', function($http) {
   return (done) => {
     $http.get('/api/getpostmetas/0/120').then(res => {
       return done(null, res.data);
-    }, err => {
-      return done(err);
+    }, res => {
+      return done(new Error(`${res.data}`));
     });
   };
 });
@@ -114,18 +114,18 @@ app.factory('fetchPost', function($http) {
   return (postId, done) => {
     $http.get(`/api/getpost/${postId}`).then(res => {
       return done(null, res.data);
-    }, err => {
-      return done(err);
+    }, res => {
+      return done(new Error(`${res.data}`));
     });
   };
 });
 
 app.factory('editPost', function($http) {
-  return (postId, content, done) => {
-    $http.post(`/api/editpost/${postId}`, { content }).then(() => {
+  return (postId, password, content, done) => {
+    $http.post(`/api/editpost/${postId}`, { password, content }).then(() => {
       return done();
-    }, err => {
-      return done(err);
+    }, res => {
+      return done(new Error(`${res.data}`));
     });
   };
 });

@@ -3,10 +3,12 @@
 const express    = require('express');
 const moment     = require('moment');
 const bodyParser = require('body-parser');
+const bcrypt     = require('bcrypt');
 const db         = require('./db');
 
-const PORT      = process.env.PORT || 4000;
-const DATA_HOST = 'http://aurelienjp.cluster010.ovh.net/data/blog';
+const PORT       = process.env.PORT || 4000;
+const DATA_HOST  = 'http://aurelienjp.cluster010.ovh.net/data/blog';
+const ADMIN_HASH = '$2a$14$X91C3anDql.EKSEAn7L/JO/t.JHtMbuiDztxMU.QyUPlvVK1zBHwK';
 
 setupAndStart();
 
@@ -53,8 +55,21 @@ app.get('/api/getpost/:postId', async (req, res) => {
 });
 
 app.post('/api/editpost/:postId', async (req, res) => {
-  const postId = req.params.postId;
-  const content = req.body.content;
+  const postId   = req.params.postId;
+  const password = String(req.body.password);
+  const content  = String(req.body.content);
+  let passwordMatches;
+
+  try {
+    passwordMatches = await bcrypt.compare(password, ADMIN_HASH);
+  } catch (err) {
+    return res.status(500).end(`Password check crashed for some reason: ${err.message}`);
+  }
+
+  if (!passwordMatches) {
+    return res.status(403).end('Invalid password');
+  }
+
   await db.setPostContent(postId, content);
   return res.end();
 });
