@@ -1,10 +1,11 @@
 'use strict';
 
-const express    = require('express');
-const moment     = require('moment');
-const bodyParser = require('body-parser');
-const bcrypt     = require('bcrypt');
-const db         = require('./db');
+const express     = require('express');
+const moment      = require('moment');
+const bodyParser  = require('body-parser');
+const bcrypt      = require('bcrypt');
+const compression = require('compression');
+const db          = require('./db');
 
 const PORT       = process.env.PORT || 4000;
 const DATA_HOST  = 'http://aurelienjp.cluster010.ovh.net/data/blog';
@@ -40,6 +41,7 @@ app.get('/blog/:year(\\d{4})/:month(\\d{2})/:postId', (req, res) => {
 // ROUTES
 // -----------------------------------------------------------------------------
 
+app.use(compression());
 app.post('*', bodyParser.json());
 app.get('/post/*', rewriteUrlToHome);
 app.get('/editpost/*', rewriteUrlToHome);
