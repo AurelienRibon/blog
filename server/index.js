@@ -26,6 +26,17 @@ app.use((req, res, next) => {
 });
 
 // -----------------------------------------------------------------------------
+// REDIRECTIONS FROM OLD BLOG
+// -----------------------------------------------------------------------------
+
+app.get('/blog/:year(\\d{4})/:month(\\d{2})/:postId', (req, res) => {
+  const year   = req.params.year;
+  const month  = req.params.month;
+  const postId = req.params.postId;
+  return res.redirect(`/post/${year}-${month}-${postId}`);
+});
+
+// -----------------------------------------------------------------------------
 // ROUTES
 // -----------------------------------------------------------------------------
 
