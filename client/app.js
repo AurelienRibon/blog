@@ -1,14 +1,17 @@
 'use strict';
 
 require('bootstrap/dist/js/bootstrap.js');
-
-const angular = require('angular');
+const highlightjs = hljs; // eslint-disable-line no-undef
+const marked      = require('marked');
+const angular     = require('angular');
 require('angular-route');
 
-const marked = require('marked');
 const app = angular.module('blog', [ 'ngRoute' ]);
 
-marked.setOptions({ breaks: true });
+marked.setOptions({
+  breaks    : true,
+  highlight : code => highlightjs.highlightAuto(code).value
+});
 
 // -----------------------------------------------------------------------------
 // ROUTER
