@@ -53,7 +53,6 @@ app.controller('HomeController', function($scope, fetchMetas, setupDisqusComment
 
 app.controller('PostController', function($scope, $location, $sce, fetchPost, setupDisqusComments) {
   const postId = getPostId();
-  setupDisqusComments(postId);
 
   $scope.onClick = (event) => {
     if (event.altKey && event.shiftKey) {
@@ -63,7 +62,8 @@ app.controller('PostController', function($scope, $location, $sce, fetchPost, se
 
   fetchPost(postId, (err, post) => {
     if (err) {
-      return console.error('Cannot fetch post', err);
+      console.error('Cannot fetch post', err);
+      return $location.path(`/`);
     }
 
     $scope.title    = post.title;
@@ -72,6 +72,8 @@ app.controller('PostController', function($scope, $location, $sce, fetchPost, se
     $scope.next     = post.next;
     $scope.previous = post.previous;
     $scope.loaded   = true;
+
+    setupDisqusComments(postId);
   });
 });
 
