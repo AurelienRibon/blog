@@ -18,7 +18,10 @@ marked.setOptions({
 // ROUTER
 // -----------------------------------------------------------------------------
 
-app.config(function($routeProvider, $locationProvider) {
+app.config([
+    '$routeProvider', '$locationProvider',
+    function($routeProvider, $locationProvider) {
+
   $locationProvider.html5Mode(true);
   $routeProvider
     .when('/', {
@@ -36,13 +39,17 @@ app.config(function($routeProvider, $locationProvider) {
     .otherwise({
       redirectTo  : '/'
     });
-});
+
+}]);
 
 // -----------------------------------------------------------------------------
 // CONTROLLERS
 // -----------------------------------------------------------------------------
 
-app.controller('HomeController', function($scope, fetchMetas, setupDisqusCommentCounts) {
+app.controller('HomeController', [
+    '$scope', 'fetchMetas', 'setupDisqusCommentCounts',
+    function($scope, fetchMetas, setupDisqusCommentCounts) {
+
   $scope.rows = [];
 
   fetchMetas((err, posts) => {
@@ -53,9 +60,13 @@ app.controller('HomeController', function($scope, fetchMetas, setupDisqusComment
     $scope.posts = slicePostMetas(posts);
     setupDisqusCommentCounts();
   });
-});
 
-app.controller('PostController', function($scope, $location, $sce, fetchPost, setupDisqusComments) {
+}]);
+
+app.controller('PostController', [
+    '$scope', '$location', '$sce', 'fetchPost', 'setupDisqusComments',
+    function($scope, $location, $sce, fetchPost, setupDisqusComments) {
+
   const postId = getPostId();
 
   $scope.onClick = (event) => {
@@ -79,9 +90,13 @@ app.controller('PostController', function($scope, $location, $sce, fetchPost, se
 
     setupDisqusComments(postId);
   });
-});
 
-app.controller('EditPostController', function($scope, $sce, fetchPost, editPost) {
+}]);
+
+app.controller('EditPostController', [
+    '$scope', '$sce', 'fetchPost', 'editPost',
+    function($scope, $sce, fetchPost, editPost) {
+
   const postId = getPostId();
 
   $scope.render = content => $sce.trustAsHtml(marked(content || ''));
@@ -101,13 +116,14 @@ app.controller('EditPostController', function($scope, $sce, fetchPost, editPost)
     $scope.content = post.content;
     $scope.loaded  = true;
   });
-});
+
+}]);
 
 // -----------------------------------------------------------------------------
 // SERVICES
 // -----------------------------------------------------------------------------
 
-app.factory('fetchMetas', function($http) {
+app.factory('fetchMetas', [ '$http', function($http) {
   return (done) => {
     $http.get('/api/getpostmetas/0/120').then(res => {
       return done(null, res.data);
@@ -115,9 +131,9 @@ app.factory('fetchMetas', function($http) {
       return done(new Error(`${res.data}`));
     });
   };
-});
+}]);
 
-app.factory('fetchPost', function($http) {
+app.factory('fetchPost', [ '$http', function($http) {
   return (postId, done) => {
     $http.get(`/api/getpost/${postId}`).then(res => {
       return done(null, res.data);
@@ -125,9 +141,9 @@ app.factory('fetchPost', function($http) {
       return done(new Error(`${res.data}`));
     });
   };
-});
+}]);
 
-app.factory('editPost', function($http) {
+app.factory('editPost', [ '$http', function($http) {
   return (postId, password, content, done) => {
     $http.post(`/api/editpost/${postId}`, { password, content }).then(() => {
       return done();
@@ -135,9 +151,9 @@ app.factory('editPost', function($http) {
       return done(new Error(`${res.data}`));
     });
   };
-});
+}]);
 
-app.factory('setupDisqusCommentCounts', function($timeout) {
+app.factory('setupDisqusCommentCounts', [ '$timeout', function($timeout) {
   return () => {
     $timeout(() => {
       const scriptAlreadyInserted = document.querySelector('#dsq-count-scr');
@@ -153,9 +169,9 @@ app.factory('setupDisqusCommentCounts', function($timeout) {
       }
     });
   };
-});
+}]);
 
-app.factory('setupDisqusComments', function($timeout) {
+app.factory('setupDisqusComments', [ '$timeout', function($timeout) {
   return (postId) => {
     const config = function() {
       this.page.url        = `https://aurelienribon.herokuapp.com/post/${postId}`;
@@ -179,7 +195,7 @@ app.factory('setupDisqusComments', function($timeout) {
       }
     });
   };
-});
+}]);
 
 // -----------------------------------------------------------------------------
 // DIRECTIVES
