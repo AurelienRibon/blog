@@ -19,6 +19,8 @@
   "dependencies": {
     "angular": "^1.6.6",
     "angular-route": "^1.6.6",
+    "angulartics": "^1.4.0",
+    "angulartics-google-analytics": "^0.4.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",

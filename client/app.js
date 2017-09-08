@@ -1,12 +1,14 @@
 'use strict';
 
+require('angulartics');
+require('angulartics-google-analytics');
 require('bootstrap/dist/js/bootstrap.js');
 const highlightjs = hljs; // eslint-disable-line no-undef
 const marked      = require('marked');
 const angular     = require('angular');
 require('angular-route');
 
-const app = angular.module('blog', [ 'ngRoute' ]);
+const app = angular.module('blog', [ 'ngRoute', 'angulartics', 'angulartics.google.analytics' ]);
 
 marked.setOptions({
   breaks    : true,
