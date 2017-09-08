@@ -22,7 +22,8 @@ exports.entry = {
     'bootstrap/dist/js/bootstrap.js',
     'marked',
     'angular',
-    'angular-route'
+    'angular-route',
+    'core-js'
   ]
 };
 
@@ -42,6 +43,19 @@ exports.plugins = [
     updateHashes(res);
   })
 ];
+
+exports.module = {
+  rules: [
+    {
+      test    : /\.js$/,
+      exclude : /node_modules/,
+      use     : {
+        loader  : 'babel-loader',
+        options : { presets: ['env'] }
+      }
+    }
+  ]
+};
 
 // -----------------------------------------------------------------------------
 // POSTBUILD TASKS
