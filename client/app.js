@@ -1,6 +1,5 @@
 'use strict';
 
-require('core-js');
 require('bootstrap/dist/js/bootstrap.js');
 const highlightjs = hljs; // eslint-disable-line no-undef
 const marked      = require('marked');

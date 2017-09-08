@@ -1,10 +1,11 @@
 'use strict';
 
-const fs                   = require('fs');
-const path                 = require('path');
-const webpack              = require('webpack');
-const WebpackMd5Hash       = require('webpack-md5-hash');
-const WebpackOnBuildPlugin = require('on-build-webpack');
+const fs                    = require('fs');
+const path                  = require('path');
+const webpack               = require('webpack');
+const WebpackMd5Hash        = require('webpack-md5-hash');
+const WebpackOnBuildPlugin  = require('on-build-webpack');
+const ClosureCompilerPlugin = require('webpack-closure-compiler');
 
 const { ProvidePlugin }      = webpack;
 const { CommonsChunkPlugin } = webpack.optimize;
@@ -23,7 +24,8 @@ exports.entry = {
     'marked',
     'angular',
     'angular-route',
-    'core-js'
+    'angulartics',
+    'angulartics-google-analytics'
   ]
 };
 
@@ -41,21 +43,16 @@ exports.plugins = [
   new WebpackMd5Hash(),
   new WebpackOnBuildPlugin(res => {
     updateHashes(res);
+  }),
+  new ClosureCompilerPlugin({
+    concurrency : 3,
+    compiler    : {
+      language_in       : 'ECMASCRIPT6_STRICT',
+      language_out      : 'ECMASCRIPT5_STRICT',
+      compilation_level : 'SIMPLE_OPTIMIZATIONS'
+    }
   })
 ];
-
-exports.module = {
-  rules: [
-    {
-      test    : /\.js$/,
-      exclude : /node_modules/,
-      use     : {
-        loader  : 'babel-loader',
-        options : { presets: ['env'] }
-      }
-    }
-  ]
-};
 
 // -----------------------------------------------------------------------------
 // POSTBUILD TASKS
