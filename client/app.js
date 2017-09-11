@@ -129,7 +129,7 @@ app.factory('fetchMetas', [ '$http', function($http) {
     $http.get('/api/getpostmetas/0/120').then(res => {
       return done(null, res.data);
     }, res => {
-      return done(new Error(`${res.data}`));
+      return done(new Error(res.data));
     });
   };
 }]);
@@ -139,7 +139,7 @@ app.factory('fetchPost', [ '$http', function($http) {
     $http.get(`/api/getpost/${postId}`).then(res => {
       return done(null, res.data);
     }, res => {
-      return done(new Error(`${res.data}`));
+      return done(new Error(res.data));
     });
   };
 }]);
@@ -149,7 +149,7 @@ app.factory('editPost', [ '$http', function($http) {
     $http.post(`/api/editpost/${postId}`, { password, content }).then(() => {
       return done();
     }, res => {
-      return done(new Error(`${res.data}`));
+      return done(new Error(res.data));
     });
   };
 }]);
