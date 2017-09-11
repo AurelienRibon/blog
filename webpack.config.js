@@ -1,6 +1,7 @@
 'use strict';
 
 const fs                    = require('fs');
+const os                    = require('os');
 const path                  = require('path');
 const webpack               = require('webpack');
 const WebpackMd5Hash        = require('webpack-md5-hash');
@@ -10,7 +11,8 @@ const ClosureCompilerPlugin = require('webpack-closure-compiler');
 const { ProvidePlugin }      = webpack;
 const { CommonsChunkPlugin } = webpack.optimize;
 
-const INDEX_HTML_PATH = `${__dirname}/public/index.html`;
+const INDEX_HTML_PATH     = `${__dirname}/public/index.html`;
+const CLOSURE_CONCURRENCY = os.cpus().length - 1;
 
 // -----------------------------------------------------------------------------
 // CONFIG
@@ -45,11 +47,12 @@ exports.plugins = [
     updateHashes(res);
   }),
   new ClosureCompilerPlugin({
-    concurrency : 3,
+    concurrency : CLOSURE_CONCURRENCY,
     compiler    : {
       language_in       : 'ECMASCRIPT6_STRICT',
       language_out      : 'ECMASCRIPT5_STRICT',
-      compilation_level : 'SIMPLE_OPTIMIZATIONS'
+      compilation_level : 'SIMPLE_OPTIMIZATIONS',
+      // create_source_map : true
     }
   })
 ];
