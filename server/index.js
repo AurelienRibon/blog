@@ -8,7 +8,7 @@ const compression = require('compression');
 const db          = require('./db');
 
 const PORT       = process.env.PORT || 4000;
-const DATA_HOST  = 'http://aurelienjp.cluster010.ovh.net/data/blog';
+const DATA_HOST  = 'https://blog-2812.s3.eu-west-3.amazonaws.com';
 const ADMIN_HASH = '$2a$14$X91C3anDql.EKSEAn7L/JO/t.JHtMbuiDztxMU.QyUPlvVK1zBHwK';
 
 setupAndStart();
