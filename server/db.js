@@ -3,7 +3,6 @@
 const mongoClient = require('mongodb').MongoClient;
 
 const HOST = process.env.MONGO_BLOG_HOST;
-const COLL = process.env.MONGO_BLOG_COLL;
 const USER = process.env.MONGO_BLOG_USER;
 const PASS = process.env.MONGO_BLOG_PASS;
 
@@ -11,8 +10,8 @@ const db = { posts: null };
 
 exports.connect = async function() {
   try {
-    const conn = await mongoClient.connect(`mongodb+srv://${USER}:${PASS}@${HOST}/${COLL}?retryWrites=true&w=majority`);
-    db.posts   = conn.collection('posts');
+    const conn = await mongoClient.connect(`mongodb+srv://${USER}:${PASS}@${HOST}?retryWrites=true&w=majority`);
+    db.posts   = conn.db('aurelien').collection('posts');
   } catch (err) {
     console.error('[FATAL] Connection to database failed.');
     console.error(err.stack);
