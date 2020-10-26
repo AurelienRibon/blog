@@ -11,7 +11,7 @@ const db = { posts: null };
 
 exports.connect = async function() {
   try {
-    const conn = await mongoClient.connect(`mongodb://${USER}:${PASS}@${HOST}/${COLL}`);
+    const conn = await mongoClient.connect(`mongodb+srv://${USER}:${PASS}@${HOST}/${COLL}?retryWrites=true&w=majority`);
     db.posts   = conn.collection('posts');
   } catch (err) {
     console.error('[FATAL] Connection to database failed.');
